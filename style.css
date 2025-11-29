@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #202020;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+}
+
+#game-container {
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+canvas {
+    background-color: #5c94fc;
+    /* Sky blue */
+    display: block;
+}
+
+#ui {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 2px 2px 0 #000;
+    pointer-events: none;
+}
+
+#fullscreen-btn {
+    pointer-events: auto;
+    background: none;
+    border: 2px solid white;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+#fullscreen-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.input-group {
+    margin: 20px 0;
+    pointer-events: auto;
+}
+
+.input-group label {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.input-group input {
+    padding: 5px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+    width: 100px;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.screen h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #ffd700;
+    text-shadow: 3px 3px 0 #000;
+}
+
+.screen p {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.hidden {
+    display: none;
+}
