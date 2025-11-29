@@ -1,5 +1,16 @@
+// copyright 2025 avellaneda alejandro
+// info@tudexnetworks.com
+
+
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
 
 // --- AUDIO SYSTEM (Web Audio API) ---
 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -351,9 +362,16 @@ function update() {
     if (player.x < 0) player.x = 0;
     if (player.y > 1000) die();
 
-    camera.x += (player.x - canvas.width / 3 - camera.x) * 0.1; // Smooth camera
+    camera.x += (player.x - canvas.width / 3 - camera.x) * 0.1; // Smooth camera X
     if (camera.x < 0) camera.x = 0;
     if (camera.x > levelWidth - canvas.width) camera.x = levelWidth - canvas.width;
+
+    // Camera Y (Vertical Follow)
+    let targetY = player.y - canvas.height / 2;
+    // Clamp Y to not show too much below ground (ground is approx at 550-600)
+    if (targetY > 200) targetY = 200; // Limit bottom view
+    if (targetY < -200) targetY = -200; // Limit top view (optional)
+    camera.y += (targetY - camera.y) * 0.1;
 
     enemies.forEach(enemy => {
         if (enemy.x > camera.x - 100 && enemy.x < camera.x + canvas.width + 100) {
