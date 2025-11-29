@@ -10,8 +10,40 @@
 
 <body>
     <div id="game-container">
-        <p>Presiona ESPACIO para reiniciar</p>
-    </div>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="ui">
+            <div id="score">Puntos: 0</div>
+            <div id="lives">Vidas: 3</div>
+        </div>
+
+        <div class="fab-container">
+            <button id="pause-btn" class="icon-btn" title="Pausar">⏸</button>
+            <button id="fullscreen-btn" class="icon-btn" title="Pantalla Completa">⛶</button>
+        </div>
+
+        <div id="start-screen" class="screen">
+            <h1>Super Juego</h1>
+            <p>Presiona ESPACIO para empezar</p>
+            <p>Flechas para moverte, ESPACIO para saltar</p>
+            <button id="start-btn" class="btn">Jugar Ahora</button>
+        </div>
+
+        <div id="pause-screen" class="screen hidden">
+            <h1>Pausa</h1>
+            <button id="resume-btn" class="btn">Continuar</button>
+            <button id="restart-btn-pause" class="btn btn-secondary">Reiniciar</button>
+        </div>
+
+        <div id="game-over-screen" class="screen hidden">
+            <h1>Game Over</h1>
+            <p>Puntos: <span id="final-score">0</span></p>
+            <button id="restart-btn" class="btn">Intentar de nuevo</button>
+        </div>
+        <div id="win-screen" class="screen hidden">
+            <h1>¡Nivel Completado!</h1>
+            <p>Puntos Totales: <span id="win-score">0</span></p>
+            <button id="next-level-btn" class="btn">Jugar otro nivel</button>
+        </div>
     </div>
     <script src="game.js"></script>
 </body>
