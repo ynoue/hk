@@ -69,6 +69,8 @@ let lives = 3;
 let keys = {};
 let currentSeed = 12345;
 let time = 0; // Global time for animations
+let stamina = 15; // Max 15 seconds
+const MAX_STAMINA = 15;
 
 // Physics
 const GRAVITY = 0.5;
@@ -367,12 +369,36 @@ function update() {
     time++;
 
     // Movement
+    let isSprinting = (keys['ShiftLeft'] || keys['ShiftRight']);
+
+    // Stamina Logic
+    if (isSprinting && stamina > 0) {
+        stamina -= 1 / 60; // Decrease by 1 sec every 60 frames (approx)
+    } else {
+        isSprinting = false; // Cannot sprint if no stamina
+        if (stamina < MAX_STAMINA) {
+            stamina += 1 / 60; // Recharge
+        }
+    }
+    // Clamp stamina
+    if (stamina < 0) stamina = 0;
+    if (stamina > MAX_STAMINA) stamina = MAX_STAMINA;
+
+    // Update Stamina Bar
+    const staminaBar = document.getElementById('stamina-bar');
+    if (staminaBar) {
+        staminaBar.style.width = `${(stamina / MAX_STAMINA) * 100}%`;
+    }
+
+    const accel = isSprinting ? 1.5 : 1;
+    const currentMaxSpeed = isSprinting ? SPEED * 1.5 : SPEED;
+
     if (keys['ArrowLeft']) {
-        if (player.velX > -SPEED) player.velX--;
+        if (player.velX > -currentMaxSpeed) player.velX -= accel;
         player.facingRight = false;
     }
     if (keys['ArrowRight']) {
-        if (player.velX < SPEED) player.velX++;
+        if (player.velX < currentMaxSpeed) player.velX += accel;
         player.facingRight = true;
     }
 
