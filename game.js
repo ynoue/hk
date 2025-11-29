@@ -258,13 +258,31 @@ window.addEventListener('keydown', (e) => {
 });
 window.addEventListener('keyup', (e) => keys[e.code] = false);
 
-document.getElementById('start-btn').addEventListener('click', startGame);
-document.getElementById('restart-btn').addEventListener('click', startGame);
-document.getElementById('restart-btn-pause').addEventListener('click', () => { togglePause(); startGame(); });
-document.getElementById('resume-btn').addEventListener('click', togglePause);
-document.getElementById('next-level-btn').addEventListener('click', startGame);
-document.getElementById('pause-btn').addEventListener('click', togglePause);
-document.getElementById('fullscreen-btn').addEventListener('click', () => {
+document.getElementById('start-btn')?.addEventListener('click', startGame);
+// Botón para abrir el tutorial desde la pantalla de inicio
+document.getElementById('tutorial-btn')?.addEventListener('click', () => {
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('tutorial-screen').classList.remove('hidden');
+});
+// Botón de continuar desde el tutorial
+document.getElementById('continue-tutorial-btn')?.addEventListener('click', () => {
+    document.getElementById('tutorial-screen').classList.add('hidden');
+    // Mostrar el contenedor del juego y ocultar la pantalla de inicio
+    document.getElementById('game-container').classList.remove('hidden');
+    startGame();
+});
+// Botón de volver al inicio desde el tutorial
+document.getElementById('back-to-start-btn')?.addEventListener('click', () => {
+    document.getElementById('tutorial-screen').classList.add('hidden');
+    document.getElementById('start-screen').classList.remove('hidden');
+});
+
+document.getElementById('restart-btn')?.addEventListener('click', startGame);
+document.getElementById('restart-btn-pause')?.addEventListener('click', () => { togglePause(); startGame(); });
+document.getElementById('resume-btn')?.addEventListener('click', togglePause);
+document.getElementById('next-level-btn')?.addEventListener('click', startGame);
+document.getElementById('pause-btn')?.addEventListener('click', togglePause);
+document.getElementById('fullscreen-btn')?.addEventListener('click', () => {
     const c = document.getElementById('game-container');
     !document.fullscreenElement ? c.requestFullscreen() : document.exitFullscreen();
 });
@@ -285,7 +303,9 @@ function startGame() {
     console.log("🌱 SEMILLA:", currentSeed);
     score = 0; lives = 3; time = 0;
     updateUI();
+    // Ocultar todas las pantallas y mostrar el contenedor del juego
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+    document.getElementById('game-container').classList.remove('hidden');
     generateLevel(currentSeed);
     loop();
 }

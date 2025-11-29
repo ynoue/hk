@@ -9,42 +9,55 @@
 </head>
 
 <body>
-    <div id="game-container">
+    <!-- Pantalla de inicio -->
+    <div id="start-screen" class="screen">
+        <h1>Juego de Plataformas</h1>
+        <button id="start-btn" class="btn">Comenzar Juego</button>
+        <button id="tutorial-btn" class="btn">Cómo Jugar</button>
+    </div>
+
+    <!-- Pantalla de tutorial -->
+    <div id="tutorial-screen" class="screen hidden">
+        <h1>Cómo Jugar</h1>
+        <p>Usa las flechas izquierda y derecha para moverte.</p>
+        <p>Usa la flecha arriba o la barra espaciadora para saltar.</p>
+        <p>Recoge un hongo para poder disparar cuchillos ninja (tecla Z).</p>
+        <button id="continue-tutorial-btn" class="btn">Continuar</button>
+        <button id="back-to-start-btn" class="btn btn-secondary">Volver</button>
+    </div>
+
+    <!-- Contenedor del juego (oculto hasta iniciar) -->
+    <div id="game-container" class="hidden">
         <canvas id="gameCanvas"></canvas>
         <div id="ui">
             <div id="score">Puntos: 0</div>
             <div id="lives">Vidas: 3</div>
+            <div id="fps">FPS: 0</div>
         </div>
-
         <div class="fab-container">
             <button id="pause-btn" class="icon-btn" title="Pausar">⏸</button>
             <button id="fullscreen-btn" class="icon-btn" title="Pantalla Completa">⛶</button>
         </div>
-
-        <div id="start-screen" class="screen">
-            <h1>Super Juego</h1>
-            <p>Presiona ESPACIO para empezar</p>
-            <p>Flechas para moverte, ESPACIO para saltar</p>
-            <button id="start-btn" class="btn">Jugar Ahora</button>
-        </div>
-
+        <!-- Pantalla de pausa -->
         <div id="pause-screen" class="screen hidden">
             <h1>Pausa</h1>
             <button id="resume-btn" class="btn">Continuar</button>
             <button id="restart-btn-pause" class="btn btn-secondary">Reiniciar</button>
         </div>
-
+        <!-- Pantalla de Game Over -->
         <div id="game-over-screen" class="screen hidden">
             <h1>Game Over</h1>
             <p>Puntos: <span id="final-score">0</span></p>
             <button id="restart-btn" class="btn">Intentar de nuevo</button>
         </div>
+        <!-- Pantalla de victoria -->
         <div id="win-screen" class="screen hidden">
             <h1>¡Nivel Completado!</h1>
             <p>Puntos Totales: <span id="win-score">0</span></p>
             <button id="next-level-btn" class="btn">Jugar otro nivel</button>
         </div>
     </div>
+
     <script src="game.js"></script>
 </body>
 
