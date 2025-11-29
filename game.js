@@ -99,6 +99,9 @@ let particles = [];
 let levelWidth = 0;
 let clouds = [];
 let mountains = []; // Parallax background
+let knives = []; // Projectiles
+let lastFpsTime = performance.now();
+let frames = 0;
 
 // --- PARTICLES ---
 class Particle {
@@ -128,6 +131,24 @@ class Particle {
             ctx.fillRect(this.x, this.y, this.size, this.size);
         }
         ctx.globalAlpha = 1.0;
+    }
+}
+
+class Knife {
+    constructor(x, y, dir) {
+        this.x = x;
+        this.y = y;
+        this.width = 20;
+        this.height = 6;
+        this.speed = 12;
+        this.dir = dir; // 1 = right, -1 = left
+    }
+    update() {
+        this.x += this.speed * this.dir;
+    }
+    draw(ctx) {
+        ctx.fillStyle = '#00ffff'; // Cyan ninja color
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
 
@@ -251,6 +272,13 @@ window.addEventListener('keydown', (e) => {
             sfx.jump();
             spawnParticles(player.x + player.width / 2, player.y + player.height, '#fff', 5, 'circle');
         }
+    }
+    if (e.code === 'KeyZ' && player.isBig) {
+        const dir = player.facingRight ? 1 : -1;
+        const knifeX = player.facingRight ? player.x + player.width : player.x - 20;
+        const knifeY = player.y + player.height / 2 - 3;
+        knives.push(new Knife(knifeX, knifeY, dir));
+        sfx.powerup(); // Reuse powerup sound for shoot
     }
     if (e.code === 'Escape' || e.code === 'KeyP') {
         if (gameRunning) togglePause();
@@ -439,6 +467,24 @@ function update() {
 
     particles.forEach(p => p.update());
     particles = particles.filter(p => p.life > 0);
+
+    // Knives logic
+    knives.forEach(k => k.update());
+    knives = knives.filter(k => k.x > camera.x - 100 && k.x < camera.x + canvas.width + 100);
+
+    // Knife collisions
+    enemies.forEach(enemy => {
+        knives.forEach((k, ki) => {
+            if (checkCollision(k, enemy)) {
+                enemy.dead = true;
+                knives.splice(ki, 1);
+                score += 100;
+                sfx.stomp();
+                spawnParticles(enemy.x, enemy.y, '#8B4513', 10);
+                updateUI();
+            }
+        });
+    });
 }
 
 function takeDamage() {
@@ -592,6 +638,9 @@ function draw() {
     // Particles
     particles.forEach(p => p.draw(ctx));
 
+    // Knives
+    knives.forEach(k => k.draw(ctx));
+
     // 8. Player with Squash & Stretch
     if (gameRunning) {
         if (player.invulnerable && Math.floor(Date.now() / 100) % 2 === 0) {
@@ -646,6 +695,16 @@ function loop() {
         update();
         draw();
         requestAnimationFrame(loop);
+
+        // FPS Counter
+        frames++;
+        const now = performance.now();
+        if (now - lastFpsTime >= 1000) {
+            const fpsEl = document.getElementById('fps');
+            if (fpsEl) fpsEl.innerText = `FPS: ${frames}`;
+            frames = 0;
+            lastFpsTime = now;
+        }
     } else if (gamePaused) {
         // Optional: Draw a "PAUSED" text overlay if needed, but we have the HTML screen
     }
